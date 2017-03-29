@@ -1,4 +1,4 @@
-import copy
+﻿import copy
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -17,6 +17,7 @@ STANDARD_CLAIMS = {
 class ScopeClaims(object):
 
     def __init__(self, token):
+        self.token = token
         self.user = token.user
         claims = copy.deepcopy(STANDARD_CLAIMS)
         self.userinfo = settings.get('OIDC_USERINFO', import_str=True)(claims, self.user)
@@ -115,6 +116,9 @@ class StandardScopeClaims(ScopeClaims):
             'zoneinfo': self.userinfo.get('zoneinfo'),
             'locale': self.userinfo.get('locale'),
             'updated_at': self.userinfo.get('updated_at'),
+            'jobtitle': getattr(self.userinfo, 'jobtitle', None),
+            'jobrole': getattr(self.userinfo, 'jobrole', None),
+            'organization': getattr(self.userinfo, 'organization', None),
         }
 
         return dic

@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
+from subscriptions.models import SubscriptionProduct
 
 CLIENT_TYPE_CHOICES = [
     ('confidential', 'Confidential'),
@@ -61,6 +62,13 @@ class Client(models.Model):
             self._post_logout_redirect_uris = '\n'.join(value)
         return locals()
     post_logout_redirect_uris = property(**post_logout_redirect_uris())
+    product = models.OneToOneField(SubscriptionProduct, 
+                               on_delete=models.CASCADE, 
+                               default=-1,
+                               related_name='oidc_client',
+                               name='product',
+                               help_text=_("Product related to this client"))
+
 
     class Meta:
         verbose_name = _(u'Client')
