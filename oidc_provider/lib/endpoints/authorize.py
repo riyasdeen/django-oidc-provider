@@ -1,4 +1,4 @@
-from datetime import timedelta
+﻿from datetime import timedelta
 from hashlib import (
     md5,
     sha256,
@@ -111,7 +111,8 @@ class AuthorizeEndpoint(object):
             raise AuthorizeError(self.params['redirect_uri'], 'invalid_request', self.grant_type)
 
         # Response type parameter validation.
-        if self.is_authentication and self.params['response_type'] != self.client.response_type:
+        if self.is_authentication and \
+            not (self.params['response_type'] == self.client.response_type or self.params['response_type'] == "code"):
             raise AuthorizeError(self.params['redirect_uri'], 'invalid_request', self.grant_type)
 
         # PKCE validation of the transformation method.
