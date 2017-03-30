@@ -1,7 +1,9 @@
-from django.core.urlresolvers import reverse
+﻿from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 
 from oidc_provider import settings
+
+import os
 
 try:
     from urlparse import urlsplit, urlunsplit
@@ -30,6 +32,22 @@ def redirect(uri):
     response['Location'] = uri
     return response
 
+def get_site_scheme(request=None):
+    """
+    Detect site scheme and return, http or https
+    """
+    protocol_environ_variable = os.environ.get("PROTOCOL", None)            # If protocol is explicitly http or https, return value
+    if protocol_environ_variable and protocol_environ_variable in ['https', 'http']:
+        return protocol_environ_variable
+    else:
+        # If LETSENCRYPT_EMAIL environment is available, then it's hosted in docker cloud and will be https
+        lets_encrypt_environ_variable = os.environ.get("LETSENCRYPT_EMAIL", None)
+        if lets_encrypt_environ_variable:
+            return 'https'
+        elif request:                       # if request is not none, return scheme
+            return request.scheme
+        else:
+            return 'http'                   # default httos
 
 def get_site_url(site_url=None, request=None):
     """
@@ -44,7 +62,8 @@ def get_site_url(site_url=None, request=None):
     if site_url:
         return site_url
     elif request:
-        return '{}://{}'.format(request.scheme, request.get_host())
+        scheme = settings.get('SITE_URL')
+        return '{}://{}'.format(get_site_scheme(request), request.get_host())
     else:
         raise Exception('Either pass `site_url`, '
                         'or set `SITE_URL` in settings, '
