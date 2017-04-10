@@ -78,6 +78,7 @@ class AuthorizeEndpoint(object):
         self.params['prompt'] = query_dict.get('prompt', '')
         self.params['code_challenge'] = query_dict.get('code_challenge', '')
         self.params['code_challenge_method'] = query_dict.get('code_challenge_method', '')
+        self.params['device_id'] = query_dict.get('device_id', '')
 
     def validate_params(self):
         # Client validation.
@@ -235,6 +236,7 @@ class AuthorizeEndpoint(object):
             }
         )
         uc.scope = self.params['scope']
+        uc.device_id = self.params['device_id']
 
         # Rewrite expires_at and date_given if object already exists.
         if not created:

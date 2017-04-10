@@ -167,6 +167,7 @@ class Token(BaseCodeTokenModel):
 class UserConsent(BaseCodeTokenModel):
 
     date_given = models.DateTimeField(verbose_name=_(u'Date Given'))
+    device_id = models.CharField(max_length=255, null=True, verbose_name=_(u'Device ID')) # Id of the device from which user gave authorization
 
     class Meta:
         unique_together = ('user', 'client')

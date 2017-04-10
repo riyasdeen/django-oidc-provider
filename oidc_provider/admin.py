@@ -1,4 +1,4 @@
-from hashlib import sha224
+﻿from hashlib import sha224
 from random import randint
 from uuid import uuid4
 
@@ -6,7 +6,7 @@ from django.forms import ModelForm
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from oidc_provider.models import Client, Code, Token, RSAKey
+from oidc_provider.models import Client, Code, Token, RSAKey, UserConsent
 
 
 class ClientForm(ModelForm):
@@ -87,3 +87,7 @@ class TokenAdmin(admin.ModelAdmin):
 class RSAKeyAdmin(admin.ModelAdmin):
 
     readonly_fields = ['kid']
+
+@admin.register(UserConsent)
+class UserConsentAdmin(admin.ModelAdmin):
+    list_display = ['client', 'user', 'date_given', 'device_id']
