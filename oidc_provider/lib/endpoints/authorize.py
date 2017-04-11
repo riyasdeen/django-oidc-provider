@@ -256,6 +256,12 @@ class AuthorizeEndpoint(object):
             uc = UserConsent.objects.get(user=self.request.user, client=self.client)
             if (set(self.params['scope']).issubset(uc.scope)) and not (uc.has_expired()):
                 value = True
+
+                # If device_id for user consent is none or empty and 
+                # authrorize has params device_id, set user consent to this device id
+                if not uc.device_id and self.params['device_id']:
+                    uc.device_id = self.params['device_id']
+                    uc.save()
         except UserConsent.DoesNotExist:
             pass
 
