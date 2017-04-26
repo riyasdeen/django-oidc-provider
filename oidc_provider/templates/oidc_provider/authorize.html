@@ -1,20 +1,35 @@
-<h1>Request for Permission</h1>
+{% extends "account/account_base.html" %}
 
-<p>Client <strong>{{ client.name }}</strong> would like to access this information of you ...</p>
+{% block local_content %}
+    {% load filters %}
+    {% load staticfiles %}
 
-<form method="post" action="{% url 'oidc_provider:authorize' %}">
+    <div class="main-login main-center">
+        <h3>
+        <img class="product-logo-md img-circle" src="{{client.product.product_logo.url}}" />
+        <strong>{{ client.name }}</strong> 
+        </h3>
+        <p><b>This app would like to:</b></p>
 
-    {% csrf_token %}
+        <form method="post" action="{% url 'oidc_provider:authorize' %}">
 
-    {{ hidden_inputs }}
+            {% csrf_token %}
 
-    <ul>
-        {% for scope in scopes %}
-        <li><strong>{{ scope.name }}</strong> <br><i>{{ scope.description }}</i></li>
-        {% endfor %}
-    </ul>
+            {{ hidden_inputs }}
 
-    <input type="submit" value="Decline" />
-    <input name="allow" type="submit" value="Authorize" />
+            <ul>
+                {% for scope in scopes %}
+                <li><i>{{ scope.description }}</i></li>
+                {% endfor %}
+            </ul>
 
-</form>
+            <p><small>{{client.name}} and CRCSI Accounts will use this informatiom in accordance with their respective terms of service and privacy policies.</small></p>
+            {% if client.terms_url %}
+                <p><small>{{client.name}} terms and Conditions <a href="{{client.terms_url}}" target="_blank">here</a></small></p>
+            {% endif %}
+            <button type="submit" value="Decline" class="btn btn-danger btn-md btn-block">Decline</button>
+            <button name="allow" type="submit" value="Authorize" class="btn btn-primary btn-md btn-block">Authorize</button>
+        </form>
+    </div>
+{% endblock %}
+

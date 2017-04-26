@@ -98,7 +98,7 @@ class StandardScopeClaims(ScopeClaims):
 
     info_profile = (
         _(u'Basic profile'),
-        _(u'Access to your basic information. Includes names, gender, birthdate and other information.'),
+        _(u'View your basic information. Includes first and last name, profile image, job title, job role and organization.'),
     )
     def scope_profile(self):
         dic = {
@@ -125,7 +125,7 @@ class StandardScopeClaims(ScopeClaims):
 
     info_email = (
         _(u'Email'),
-        _(u'Access to your email address.'),
+        _(u'View your email address.'),
     )
     def scope_email(self):
         dic = {
@@ -137,7 +137,7 @@ class StandardScopeClaims(ScopeClaims):
 
     info_phone = (
         _(u'Phone number'),
-        _(u'Access to your phone number.'),
+        _(u'View your phone number.'),
     )
     def scope_phone(self):
         dic = {
@@ -149,7 +149,7 @@ class StandardScopeClaims(ScopeClaims):
 
     info_address = (
         _(u'Address information'),
-        _(u'Access to your address. Includes country, locality, street and other information.'),
+        _(u'View your address. Includes country, locality, street and other information.'),
     )
     def scope_address(self):
         dic = {
